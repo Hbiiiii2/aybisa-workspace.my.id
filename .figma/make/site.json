@@ -1,0 +1,18 @@
+{
+  "title": "Jasa Pembuatan Website Profesional Mulai 500rb | Aybisa Studio",
+  "description": "Jasa pembuatan website profesional untuk sekolah (.sch.id), UMKM (.my.id/.biz.id), dan perusahaan (.com/.id). Mulai 500rb include domain & support maintenance. Hubungi Aybisa Studio!",
+  "language": "id",
+  "robots": {
+    "index": true
+  },
+  "icons": {
+    "icon": "/favicon.svg"
+  },
+  "openGraph": {
+    "image": "https://aybisa-workspace.my.id/src/assets/aybisa/preview-smp.png"
+  },
+  "accessibility": {
+    "addBypassLinks": false,
+    "ignoreReducedMotion": false
+  }
+}

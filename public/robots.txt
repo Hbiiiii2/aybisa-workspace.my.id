@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://aybisa-workspace.my.id/sitemap.xml
