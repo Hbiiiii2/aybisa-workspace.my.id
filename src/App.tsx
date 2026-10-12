@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import heroCharacter from "./assets/aybisa/hero-character.png"
 import coderTablet from "./assets/aybisa/coder-tablet.png"
 import webPanel from "./assets/aybisa/web-panel.png"
@@ -281,8 +281,8 @@ const portfolioProjects = [
   {
     category: "Website Sekolah",
     title: "TK Al-Madinah Islamic Centre",
-    domain: "tk.almadinah-islamiccentrekkmb.sch.id",
-    url: "https://tk.almadinah-islamiccentrekkmb.sch.id",
+    domain: "tk.almadinah-islamiccenterkkmb.sch.id",
+    url: "https://tk.almadinah-islamiccenterkkmb.sch.id",
     image: previewTk,
     tag: "Pendidikan",
     theme: "kindergarten",
@@ -374,7 +374,7 @@ const testimonials = [
   {
     name: "Ibu Nurul Ummi Hafiza, S.Pd",
     role: "Principal TK Al-Madinah Islamic Centre KKMB",
-    domain: "tk.almadinah-islamiccentrekkmb.sch.id",
+    domain: "tk.almadinah-islamiccenterkkmb.sch.id",
     initials: "NH",
     theme: "kindergarten",
     quote:
@@ -403,6 +403,35 @@ const testimonials = [
 export default function App() {
   const [menuOpen, setMenuOpen] = useState(false)
   const [activeFaq, setActiveFaq] = useState<number | null>(0)
+  const [scrolled, setScrolled] = useState(false)
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 20)
+    }
+    window.addEventListener("scroll", handleScroll, { passive: true })
+    handleScroll()
+    return () => window.removeEventListener("scroll", handleScroll)
+  }, [])
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("is-visible")
+          }
+        })
+      },
+      { threshold: 0.08, rootMargin: "0px 0px -30px 0px" }
+    )
+
+    const targets = document.querySelectorAll(".reveal-up, .reveal-scale, .reveal-stagger")
+    targets.forEach((el) => observer.observe(el))
+
+    return () => observer.disconnect()
+  }, [])
+
   const nav = [
     ["Beranda", "beranda"],
     ["Layanan", "layanan"],
@@ -415,7 +444,7 @@ export default function App() {
 
   return (
     <>
-      <header className="site-header">
+      <header className={`site-header${scrolled ? " is-scrolled" : ""}`}>
         <nav className="nav container" aria-label="Navigasi utama">
           <a
             href="#beranda"
@@ -454,7 +483,10 @@ export default function App() {
         <section className="hero section" id="beranda">
           <div className="hero-grid container">
             <div className="hero-copy">
-              <p className="eyebrow">Partner digital dari Tangerang Selatan</p>
+              <p className="eyebrow">
+                <span className="live-dot" aria-hidden="true" />
+                Partner digital dari Tangerang Selatan
+              </p>
               <h1>
                 Website yang Membuat Bisnismu <span>Lebih Besar</span>
               </h1>
@@ -519,7 +551,7 @@ export default function App() {
         <section className="trust-strip" aria-labelledby="trust-title">
           <div className="container">
             <p id="trust-title">Solusi digital untuk berbagai kebutuhan</p>
-            <div className="trust-items">
+            <div className="trust-items reveal-stagger">
               {[
                 ["shop", "UMKM & Bisnis Lokal"],
                 ["education", "Sekolah & Pendidikan"],
@@ -537,7 +569,7 @@ export default function App() {
 
         <section className="section about" id="tentang">
           <div className="container split">
-            <div className="section-copy">
+            <div className="section-copy reveal-up">
               <p className="eyebrow">Tentang Aybisa</p>
               <h2>Lebih dari Sekadar Pembuatan Website</h2>
               <p>
@@ -555,7 +587,7 @@ export default function App() {
                 Pelajari cara kami bekerja
               </ButtonLink>
             </div>
-            <div className="about-art">
+            <div className="about-art reveal-scale">
               <div className="site-mockup">
                 <div className="mock-nav">
                   <span />
@@ -582,7 +614,7 @@ export default function App() {
 
         <section className="section services" id="layanan">
           <div className="container">
-            <div className="section-heading centered">
+            <div className="section-heading centered reveal-up">
               <p className="eyebrow">Layanan Aybisa</p>
               <h2>Solusi Digital Lengkap untuk Kebutuhan Anda</h2>
               <p>
@@ -590,7 +622,7 @@ export default function App() {
                 yang mendukung tujuan dan cara kerja organisasi Anda.
               </p>
             </div>
-            <div className="service-grid">
+            <div className="service-grid reveal-stagger">
               {services.map((service) => (
                 <article
                   className={`service-card card-${service.color}`}
@@ -617,7 +649,7 @@ export default function App() {
 
         <section className="section portfolio" id="portofolio">
           <div className="container">
-            <div className="section-heading heading-row">
+            <div className="section-heading heading-row reveal-up">
               <div>
                 <p className="eyebrow">Portofolio Kami</p>
                 <h2>Beberapa Hasil Karya Kami</h2>
@@ -626,7 +658,7 @@ export default function App() {
                 Koleksi website dan landing page yang telah kami kembangkan dan aktif beroperasi untuk sekolah, perusahaan, dan pemerintahan desa.
               </p>
             </div>
-            <div className="portfolio-grid">
+            <div className="portfolio-grid reveal-stagger">
               {portfolioProjects.map((project, index) => (
                 <article
                   className={`project project-${project.theme}`}
@@ -720,14 +752,14 @@ export default function App() {
 
         <section className="section pricing" id="harga">
           <div className="container">
-            <div className="section-heading centered">
+            <div className="section-heading centered reveal-up">
               <p className="eyebrow">Investasi Proyek</p>
               <h2>Pilihan Paket Sesuai Kebutuhan Anda</h2>
               <p>
                 Solusi pembuatan website siap pakai dengan domain, tampilan responsif, dan dukungan pemeliharaan berkelanjutan.
               </p>
             </div>
-            <div className="pricing-grid">
+            <div className="pricing-grid reveal-stagger">
               {pricingPlans.map((plan) => (
                 <article
                   className={`price-card${plan.featured ? " featured" : ""}`}
@@ -772,7 +804,7 @@ export default function App() {
 
         <section className="section why">
           <div className="container why-grid">
-            <div className="why-intro">
+            <div className="why-intro reveal-up">
               <p className="eyebrow">Mengapa Aybisa</p>
               <h2>Lebih dari Sekadar Membuat Website</h2>
               <p>
@@ -786,7 +818,7 @@ export default function App() {
                 />
               </div>
             </div>
-            <div className="why-list">
+            <div className="why-list reveal-stagger">
               {[
                 [
                   "responsive",
@@ -826,7 +858,7 @@ export default function App() {
 
         <section className="section testimonials" id="testimoni">
           <div className="container">
-            <div className="section-heading heading-row">
+            <div className="section-heading heading-row reveal-up">
               <div>
                 <p className="eyebrow">Cerita Klien</p>
                 <h2>Apa Kata Klien Kami?</h2>
@@ -835,7 +867,7 @@ export default function App() {
                 Testimoni dari kepala sekolah, kepala desa, dan pimpinan perusahaan yang telah mempercayakan kehadiran digital mereka kepada Aybisa Studio.
               </p>
             </div>
-            <div className="testimonials-grid">
+            <div className="testimonials-grid reveal-stagger">
               {testimonials.map((item) => (
                 <article className="testimonial-card" key={item.name}>
                   <div className="testimonial-card-top">
@@ -883,7 +915,7 @@ export default function App() {
 
         <section className="section process" id="proses">
           <div className="container">
-            <div className="section-heading centered">
+            <div className="section-heading centered reveal-up">
               <p className="eyebrow">Alur kolaborasi</p>
               <h2>Proses Mudah, Terstruktur, dan Jelas</h2>
               <p>
@@ -891,7 +923,7 @@ export default function App() {
                 mudah dipahami.
               </p>
             </div>
-            <ol className="process-list">
+            <ol className="process-list reveal-stagger">
               {[
                 [
                   "Konsultasi & Analisis",
@@ -928,7 +960,7 @@ export default function App() {
 
         <section className="section faq" id="faq">
           <div className="container faq-grid">
-            <div className="faq-intro">
+            <div className="faq-intro reveal-up">
               <p className="eyebrow">FAQ</p>
               <h2>Pertanyaan yang Sering Diajukan</h2>
               <p>
@@ -945,7 +977,7 @@ export default function App() {
                 Mulai konsultasi WhatsApp
               </ButtonLink>
             </div>
-            <div className="accordion">
+            <div className="accordion reveal-up">
               {faqs.map(([question, answer], index) => {
                 const open = activeFaq === index
                 return (
@@ -978,7 +1010,7 @@ export default function App() {
         </section>
 
         <section className="final-cta" id="konsultasi">
-          <div className="container cta-panel">
+          <div className="container cta-panel reveal-scale">
             <div className="cta-copy">
               <p className="eyebrow">Mulai dari percakapan</p>
               <h2>Saatnya Bisnis Anda Punya Website!</h2>
