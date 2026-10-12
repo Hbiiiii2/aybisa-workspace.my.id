@@ -483,10 +483,10 @@ export default function App() {
         <section className="hero section" id="beranda">
           <div className="hero-grid container">
             <div className="hero-copy">
-              <p className="eyebrow">
+              <div className="hero-eyebrow-badge">
                 <span className="live-dot" aria-hidden="true" />
-                Partner digital dari Tangerang Selatan
-              </p>
+                <span className="hero-eyebrow-text">Partner digital dari Tangerang Selatan</span>
+              </div>
               <h1>
                 Website yang Membuat Bisnismu <span>Lebih Besar</span>
               </h1>
