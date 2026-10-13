@@ -37,6 +37,8 @@ type IconName =
   | "support"
   | "system"
   | "whatsapp"
+  | "copy"
+  | "directions"
 
 function Icon({ name }: { name: IconName }) {
   const paths: Record<IconName, React.ReactNode> = {
@@ -69,6 +71,15 @@ function Icon({ name }: { name: IconName }) {
       <>
         <path d="m8 8-4 4 4 4M16 8l4 4-4 4M14 5l-4 14" />
       </>
+    ),
+    copy: (
+      <>
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
+      </>
+    ),
+    directions: (
+      <polygon points="3 11 22 2 13 21 11 13 3 11" />
     ),
     education: (
       <>
@@ -191,7 +202,7 @@ function ButtonLink({
 }: {
   children: React.ReactNode
   href: string
-  variant?: "primary" | "secondary" | "light" | "text" | "whatsapp"
+  variant?: "primary" | "secondary" | "light" | "text" | "whatsapp" | "maps"
   external?: boolean
   icon?: IconName | null
   iconPosition?: "start" | "end"
@@ -404,6 +415,16 @@ export default function App() {
   const [menuOpen, setMenuOpen] = useState(false)
   const [activeFaq, setActiveFaq] = useState<number | null>(0)
   const [scrolled, setScrolled] = useState(false)
+  const [copiedAddress, setCopiedAddress] = useState(false)
+  const [sitemapModalOpen, setSitemapModalOpen] = useState(false)
+
+  const handleCopyAddress = () => {
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText("Aybisa Studio, Tangerang Selatan, Banten, Indonesia")
+      setCopiedAddress(true)
+      setTimeout(() => setCopiedAddress(false), 2500)
+    }
+  }
 
   useEffect(() => {
     const handleScroll = () => {
@@ -439,6 +460,7 @@ export default function App() {
     ["Harga", "harga"],
     ["Testimoni", "testimoni"],
     ["Proses", "proses"],
+    ["Lokasi", "lokasi"],
     ["FAQ", "faq"],
   ]
 
@@ -483,10 +505,6 @@ export default function App() {
         <section className="hero section" id="beranda">
           <div className="hero-grid container">
             <div className="hero-copy">
-              <div className="hero-eyebrow-badge">
-                <span className="live-dot" aria-hidden="true" />
-                <span className="hero-eyebrow-text">Partner digital dari Tangerang Selatan</span>
-              </div>
               <h1>
                 Website yang Membuat Bisnismu <span>Lebih Besar</span>
               </h1>
@@ -958,6 +976,140 @@ export default function App() {
           </div>
         </section>
 
+        <section className="section location-section" id="lokasi">
+          <div className="container">
+            <div className="section-heading centered reveal-up">
+              <p className="eyebrow">Lokasi &amp; Kontak Resmi</p>
+              <h2>Kunjungi Workshop &amp; Hubungi Kami</h2>
+              <p>
+                Aybisa Studio berpusat di Tangerang Selatan. Kami siap berkolaborasi
+                tatap muka langsung untuk area Jabodetabek maupun koordinasi online
+                secara fleksibel untuk seluruh Indonesia.
+              </p>
+            </div>
+
+            <div className="location-grid reveal-scale">
+              <div className="location-info-card">
+                <div>
+                  <div className="location-header-row">
+                    <div className="location-status-badge">
+                      <span className="live-dot" aria-hidden="true" />
+                      <span>Buka &bull; 08:00 - 22:00 WIB</span>
+                    </div>
+                    <span className="location-verified-pill">
+                      <Icon name="check" />
+                      <span>Terdaftar di Google</span>
+                    </span>
+                  </div>
+
+                  <h3>Aybisa Studio</h3>
+                  <p className="location-subtitle">
+                    Partner Jasa Pembuatan Website, Desain, &amp; Solusi Digital
+                  </p>
+
+                  <div className="location-details-list">
+                    <div className="location-detail-item">
+                      <div className="location-icon-wrapper">
+                        <Icon name="pin" />
+                      </div>
+                      <div>
+                        <strong>Alamat Tempat Bisnis</strong>
+                        <p>Tangerang Selatan, Banten, Indonesia</p>
+                        <small>
+                          Melayani area BSD City, Bintaro, Pamulang, Ciputat, Serpong,
+                          dan pertemuan online se-Indonesia.
+                        </small>
+                      </div>
+                    </div>
+
+                    <div className="location-detail-item">
+                      <div className="location-icon-wrapper">
+                        <Icon name="phone" />
+                      </div>
+                      <div>
+                        <strong>WhatsApp Resmi</strong>
+                        <p>{WA_PHONE_DISPLAY}</p>
+                        <small>Konsultasi gratis &amp; respon cepat tanpa komitmen awal.</small>
+                      </div>
+                    </div>
+
+                    <div className="location-detail-item">
+                      <div className="location-icon-wrapper">
+                        <Icon name="mail" />
+                      </div>
+                      <div>
+                        <strong>Email Resmi</strong>
+                        <p>halo@aybisa-workspace.my.id</p>
+                        <small>Kirim kebutuhan proyek atau proposal kerjasama formal.</small>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="location-action-area">
+                  <div className="location-action-buttons">
+                    <ButtonLink
+                      href="https://share.google/Uo3IS3zhWqORObOhs"
+                      variant="maps"
+                      external
+                      icon="pin"
+                      iconPosition="start"
+                    >
+                      Buka Pin di Google Maps
+                    </ButtonLink>
+                    <button
+                      type="button"
+                      className="button-copy-address"
+                      onClick={handleCopyAddress}
+                    >
+                      <Icon name="copy" />
+                      <span>{copiedAddress ? "Alamat Tersalin! ✓" : "Salin Alamat"}</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <div className="location-map-card">
+                <div className="map-iframe-container">
+                  <iframe
+                    title="Peta Lokasi Bisnis Aybisa Studio di Tangerang Selatan"
+                    src="https://maps.google.com/maps?q=Tangerang+Selatan&t=&z=13&ie=UTF8&iwloc=&output=embed"
+                    width="100%"
+                    height="100%"
+                    style={{ border: 0 }}
+                    loading="lazy"
+                    allowFullScreen
+                    referrerPolicy="no-referrer-when-downgrade"
+                  />
+                  <div className="map-floating-overlay">
+                    <a
+                      href="https://share.google/Uo3IS3zhWqORObOhs"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="map-pin-pill"
+                    >
+                      <span className="map-pin-icon" aria-hidden="true">📍</span>
+                      <span>Pin Lokasi Aybisa Studio</span>
+                      <Icon name="external" />
+                    </a>
+                  </div>
+                </div>
+                <div className="map-card-footer">
+                  <span>🗺️ Klik pin untuk rute akurat di Google Maps</span>
+                  <a
+                    href="https://share.google/Uo3IS3zhWqORObOhs"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="map-directions-link"
+                  >
+                    Petunjuk Rute &rarr;
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
         <section className="section faq" id="faq">
           <div className="container faq-grid">
             <div className="faq-intro reveal-up">
@@ -1057,7 +1209,15 @@ export default function App() {
             <a href="#tentang">Tentang</a>
             <a href="#portofolio">Portofolio</a>
             <a href="#harga">Harga</a>
+            <a href="#lokasi">Lokasi Kami</a>
             <a href="#faq">FAQ</a>
+            <button
+              type="button"
+              onClick={() => setSitemapModalOpen(true)}
+              className="footer-link-btn"
+            >
+              Peta Situs
+            </button>
           </div>
           <div>
             <h2>Layanan</h2>
@@ -1067,7 +1227,7 @@ export default function App() {
             <a href="#layanan">Digital Support</a>
           </div>
           <div>
-            <h2>Kontak Resmi</h2>
+            <h2>Kontak &amp; Lokasi</h2>
             <div className="footer-contact-list">
               <a
                 href={getWhatsAppUrl("Halo Aybisa Studio, saya ingin konsultasi proyek.")}
@@ -1085,16 +1245,43 @@ export default function App() {
                 <Icon name="mail" />
                 <span>halo@aybisa-workspace.my.id</span>
               </a>
-              <div className="footer-contact-item">
+              <a
+                href="https://share.google/Uo3IS3zhWqORObOhs"
+                target="_blank"
+                rel="noreferrer"
+                className="footer-contact-item footer-maps-link"
+                title="Buka pin lokasi Aybisa Studio di Google Maps"
+              >
                 <Icon name="pin" />
-                <span>Tangerang Selatan, Indonesia</span>
-              </div>
+                <span>Tangerang Selatan (Pin Google Maps)</span>
+                <Icon name="external" />
+              </a>
             </div>
           </div>
         </div>
         <div className="container footer-bottom">
           <span>© 2025 Aybisa Studio. Hak cipta dilindungi.</span>
-          <span>Tangerang Selatan & Remote seluruh Indonesia</span>
+          <span>
+            <button
+              type="button"
+              onClick={() => setSitemapModalOpen(true)}
+              className="footer-sitemap-btn"
+            >
+              Peta Situs
+            </button>
+            {" • "}
+            <a
+              href="/sitemap.xml"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="footer-sitemap-link"
+              title="File XML Peta Situs Resmi untuk Mesin Pencari"
+            >
+              sitemap.xml
+            </a>
+            {" • "}
+            <span>Tangerang Selatan &amp; Remote seluruh Indonesia</span>
+          </span>
           <span>aybisa-workspace.my.id</span>
         </div>
       </footer>
@@ -1109,6 +1296,130 @@ export default function App() {
         <Icon name="whatsapp" />
         <span>Konsultasi WhatsApp</span>
       </a>
+
+      {sitemapModalOpen && (
+        <div
+          className="sitemap-modal-backdrop"
+          onClick={() => setSitemapModalOpen(false)}
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="sitemap-modal-title"
+        >
+          <div
+            className="sitemap-modal-content"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="sitemap-modal-header">
+              <div>
+                <h3 id="sitemap-modal-title">Peta Situs (Sitemap)</h3>
+                <p style={{ margin: "4px 0 0", fontSize: "13px", color: "var(--muted)" }}>
+                  Navigasi struktur lengkap halaman dan layanan Aybisa Studio
+                </p>
+              </div>
+              <button
+                type="button"
+                className="sitemap-close-btn"
+                aria-label="Tutup peta situs"
+                onClick={() => setSitemapModalOpen(false)}
+              >
+                &times;
+              </button>
+            </div>
+
+            <div className="sitemap-links-grid">
+              <div className="sitemap-category">
+                <h4>Halaman Utama</h4>
+                <ul>
+                  <li><a href="#beranda" onClick={() => setSitemapModalOpen(false)}>Beranda Utama</a></li>
+                  <li><a href="#tentang" onClick={() => setSitemapModalOpen(false)}>Tentang Aybisa</a></li>
+                  <li><a href="#layanan" onClick={() => setSitemapModalOpen(false)}>Daftar Layanan</a></li>
+                  <li><a href="#portofolio" onClick={() => setSitemapModalOpen(false)}>Portofolio Proyek</a></li>
+                  <li><a href="#harga" onClick={() => setSitemapModalOpen(false)}>Paket &amp; Harga</a></li>
+                  <li><a href="#testimoni" onClick={() => setSitemapModalOpen(false)}>Testimoni Klien</a></li>
+                  <li><a href="#proses" onClick={() => setSitemapModalOpen(false)}>Alur Kerjasama</a></li>
+                  <li><a href="#lokasi" onClick={() => setSitemapModalOpen(false)}>Lokasi Google Maps</a></li>
+                  <li><a href="#faq" onClick={() => setSitemapModalOpen(false)}>FAQ</a></li>
+                  <li><a href="#konsultasi" onClick={() => setSitemapModalOpen(false)}>Konsultasi Gratis</a></li>
+                </ul>
+              </div>
+
+              <div className="sitemap-category">
+                <h4>Layanan Digital</h4>
+                <ul>
+                  <li><a href="#layanan" onClick={() => setSitemapModalOpen(false)}>Website Development</a></li>
+                  <li><a href="#layanan" onClick={() => setSitemapModalOpen(false)}>UI/UX Design &amp; Branding</a></li>
+                  <li><a href="#layanan" onClick={() => setSitemapModalOpen(false)}>Sistem Informasi Custom</a></li>
+                  <li><a href="#layanan" onClick={() => setSitemapModalOpen(false)}>Dukungan &amp; Maintenance</a></li>
+                </ul>
+                <h4 style={{ marginTop: "18px" }}>Paket Website</h4>
+                <ul>
+                  <li><a href="#harga" onClick={() => setSitemapModalOpen(false)}>Website Sekolah (.sch.id)</a></li>
+                  <li><a href="#harga" onClick={() => setSitemapModalOpen(false)}>Website UMKM (.my.id/.biz.id)</a></li>
+                  <li><a href="#harga" onClick={() => setSitemapModalOpen(false)}>Website Perusahaan (.com/.id)</a></li>
+                </ul>
+              </div>
+
+              <div className="sitemap-category">
+                <h4>Kontak &amp; Lokasi</h4>
+                <ul>
+                  <li>
+                    <a
+                      href="https://share.google/Uo3IS3zhWqORObOhs"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      Pin Google Maps Resmi ↗
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      href={getWhatsAppUrl("Halo Aybisa Studio, saya ingin konsultasi dari halaman Peta Situs.")}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      WhatsApp ({WA_PHONE_DISPLAY}) ↗
+                    </a>
+                  </li>
+                  <li>
+                    <a href="mailto:halo@aybisa-workspace.my.id">
+                      halo@aybisa-workspace.my.id
+                    </a>
+                  </li>
+                </ul>
+                <h4 style={{ marginTop: "18px" }}>Format Mesin Pencari</h4>
+                <ul>
+                  <li>
+                    <a href="/sitemap.xml" target="_blank" rel="noopener noreferrer">
+                      XML Sitemap (sitemap.xml) ↗
+                    </a>
+                  </li>
+                  <li>
+                    <a href="/robots.txt" target="_blank" rel="noopener noreferrer">
+                      Robots.txt ↗
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+            <div style={{ marginTop: "24px", paddingTop: "16px", borderTop: "1px solid var(--border)", display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "12px" }}>
+              <span style={{ fontSize: "12px", color: "var(--muted)" }}>
+                Peta situs resmi terdaftar: <code>https://aybisa-workspace.my.id/sitemap.xml</code>
+              </span>
+              <a
+                href="/sitemap.xml"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="button button-secondary"
+                style={{ minHeight: "38px", padding: "8px 16px", fontSize: "12px" }}
+              >
+                <span>Buka sitemap.xml</span>
+                <Icon name="external" />
+              </a>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   )
 }
